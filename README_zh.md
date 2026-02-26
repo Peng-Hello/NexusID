@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./doc/assets/logo.png" alt="NexusID Logo" width="200" />
+</p>
+
 # NexusID
 
 *[English Version](README.md)*
