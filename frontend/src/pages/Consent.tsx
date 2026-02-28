@@ -9,6 +9,7 @@ function Consent() {
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
+    const [clientName, setClientName] = useState('')
 
     const clientId = searchParams.get('client_id')
     const redirectUri = searchParams.get('redirect_uri')
@@ -16,23 +17,51 @@ function Consent() {
     const state = searchParams.get('state')
     const responseType = searchParams.get('response_type')
 
-    // In a real app, we would fetch the client details (name, logo, etc.) based on clientId
-    // For now, we'll just display the client ID
-    const clientName = clientId ? `Application (${clientId})` : 'An Application'
-
     useEffect(() => {
         // Validate required parameters
         if (!clientId || !redirectUri || responseType !== 'code') {
             setError('Invalid authorization request. Missing or invalid parameters.')
+            return
         }
 
         // Check if user is logged in
         const token = localStorage.getItem('accessToken')
         if (!token) {
-            // Redirect to login with returnUrl
             const returnUrl = encodeURIComponent(window.location.pathname + window.location.search)
             navigate(`/login?returnUrl=${returnUrl}`)
+            return
         }
+
+        // Fetch real client name
+        const fetchClientName = async () => {
+            try {
+                // The user's tenant_id is in their stored user object
+                const userStr = localStorage.getItem('user')
+                const user = userStr ? JSON.parse(userStr) : null
+                const tenantId = user?.tenant_id
+                if (!tenantId) {
+                    setClientName(clientId)
+                    return
+                }
+                const res = await fetch(`/api/v1/tenants/${tenantId}/clients?page=1&page_size=100`, {
+                    headers: { 'Authorization': `Bearer ${token}` },
+                })
+                if (res.ok) {
+                    const data = await res.json()
+                    const clients: { client_id: string; name: string }[] = data.data || []
+                    const found = clients.find(c => c.client_id === clientId)
+                    setClientName(found?.name || clientId || 'Unknown Application')
+                } else {
+                    setClientName(clientId || 'Unknown Application')
+                }
+            } catch {
+                setClientName(clientId || 'Unknown Application')
+            } finally {
+                // done loading
+            }
+        }
+
+        fetchClientName()
     }, [clientId, redirectUri, responseType, navigate])
 
     const scopesList = scope ? scope.split(' ') : []
@@ -78,7 +107,7 @@ function Consent() {
             } else {
                 setError(data.error_description || data.error || 'Failed to authorize application')
             }
-        } catch (err) {
+        } catch {
             setError('A network error occurred while processing your request.')
         } finally {
             setLoading(false)

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
@@ -7,6 +7,7 @@ import LanguageSwitcher from '../components/LanguageSwitcher'
 
 function Login() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const { t } = useTranslation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -38,7 +39,9 @@ function Login() {
       localStorage.setItem('refreshToken', data.refresh_token)
       localStorage.setItem('user', JSON.stringify(data.user))
 
-      navigate('/dashboard')
+      // Support returnUrl for OIDC consent flow redirect-back
+      const returnUrl = searchParams.get('returnUrl')
+      navigate(returnUrl ? decodeURIComponent(returnUrl) : '/dashboard')
     } catch (err) {
       setError(err instanceof Error ? err.message : t('login.loginFailed'))
     } finally {

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
 
@@ -43,12 +44,15 @@ func (h *OIDCFlowHandler) Authorize(c *gin.Context) {
 		return
 	}
 
-	// For NexusID, the OAuth authorization process happens in the frontend
-	// We redirect the user to the frontend consent screen, appending the query params.
-	// The frontend will check if the user is logged in, and if so, call /api/v1/oauth/consent.
+	// Build the frontend consent URL dynamically from the incoming request
+	// So it works in any environment (local dev, staging, production)
+	scheme := "http"
+	if c.Request.TLS != nil || c.GetHeader("X-Forwarded-Proto") == "https" {
+		scheme = "https"
+	}
+	host := c.Request.Host
 
-	// Create frontend consent URL
-	consentURL, err := url.Parse("http://localhost:5173/oauth/consent")
+	consentURL, err := url.Parse(fmt.Sprintf("%s://%s/oauth/consent", scheme, host))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate consent URL"})
 		return

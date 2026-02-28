@@ -19,6 +19,13 @@ interface User {
   created_at: string
 }
 
+interface Role {
+  id: number
+  name: string
+  description: string
+  is_system: boolean
+}
+
 function Users() {
   const { tenantId } = useParams()
   const { t } = useTranslation()
@@ -41,6 +48,11 @@ function Users() {
   // Delete user state
   const [deletingUser, setDeletingUser] = useState<User | null>(null)
   const [deleting, setDeleting] = useState(false)
+
+  // Role assignment state
+  const [allRoles, setAllRoles] = useState<Role[]>([])
+  const [userRoleIds, setUserRoleIds] = useState<Set<number>>(new Set())
+  const [roleLoading, setRoleLoading] = useState(false)
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -97,11 +109,26 @@ function Users() {
     }
   }
 
-  // Edit user
-  const openEditDialog = (user: User) => {
+  const openEditDialog = async (user: User) => {
     setEditingUser(user)
     setEditForm({ full_name: user.full_name || '', is_active: user.is_active })
     setEditError('')
+    setRoleLoading(true)
+    try {
+      const token = localStorage.getItem('accessToken')
+      const [rolesRes, userRolesRes] = await Promise.all([
+        fetch(`/api/v1/tenants/${tenantId}/roles?page=1&page_size=100`, { headers: { 'Authorization': `Bearer ${token}` } }),
+        fetch(`/api/v1/tenants/${tenantId}/users/${user.id}/roles`, { headers: { 'Authorization': `Bearer ${token}` } }),
+      ])
+      const [rolesData, userRolesData] = await Promise.all([rolesRes.json(), userRolesRes.json()])
+      setAllRoles(rolesData.data || [])
+      const assigned: Role[] = userRolesData.data || []
+      setUserRoleIds(new Set(assigned.map((r: Role) => r.id)))
+    } catch {
+      setAllRoles([])
+    } finally {
+      setRoleLoading(false)
+    }
   }
 
   const handleEdit = async () => {
@@ -112,10 +139,7 @@ function Users() {
       const token = localStorage.getItem('accessToken')
       const response = await fetch(`/api/v1/tenants/${tenantId}/users/${editingUser.id}`, {
         method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify(editForm),
       })
       const data = await response.json()
@@ -130,6 +154,27 @@ function Users() {
     } finally {
       setSaving(false)
     }
+  }
+
+  // Toggle role assignment
+  const handleToggleRole = async (role: Role, checked: boolean) => {
+    if (!editingUser) return
+    const token = localStorage.getItem('accessToken')
+    const endpoint = checked ? 'assign' : 'revoke'
+    await fetch(`/api/v1/tenants/${tenantId}/roles/${endpoint}`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: editingUser.id, role_id: role.id }),
+    })
+    setUserRoleIds(prev => {
+      const next = new Set(prev)
+      if (checked) {
+        next.add(role.id)
+      } else {
+        next.delete(role.id)
+      }
+      return next
+    })
   }
 
   // Delete user
@@ -307,7 +352,7 @@ function Users() {
 
       {/* Edit User Dialog */}
       <Dialog open={!!editingUser} onOpenChange={(open) => { if (!open) setEditingUser(null) }}>
-        <DialogContent className="sm:max-w-[450px]">
+        <DialogContent className="sm:max-w-[480px]">
           <DialogHeader>
             <DialogTitle>{t('users.editTitle')}</DialogTitle>
             <DialogDescription>{editingUser?.email}</DialogDescription>
@@ -331,6 +376,32 @@ function Users() {
                 onCheckedChange={(checked) => setEditForm({ ...editForm, is_active: checked === true })}
               />
               <Label htmlFor="edit-active" className="font-normal">{t('users.isActive')}</Label>
+            </div>
+
+            {/* Role Assignment */}
+            <div className="mt-2">
+              <Label className="text-sm font-medium">{t('users.rolesLabel')}</Label>
+              {roleLoading ? (
+                <p className="text-xs text-gray-500 mt-1">{t('common.loading')}</p>
+              ) : allRoles.length === 0 ? (
+                <p className="text-xs text-gray-400 mt-1">{t('roles.noRoles')}</p>
+              ) : (
+                <div className="mt-2 border rounded p-3 max-h-40 overflow-y-auto space-y-2">
+                  {allRoles.map(role => (
+                    <div key={role.id} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={`role-${role.id}`}
+                        checked={userRoleIds.has(role.id)}
+                        onCheckedChange={(checked) => handleToggleRole(role, checked === true)}
+                      />
+                      <Label htmlFor={`role-${role.id}`} className="font-normal cursor-pointer">
+                        {role.name}
+                        {role.is_system && <span className="ml-1 text-xs text-blue-500">(system)</span>}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
           <DialogFooter>

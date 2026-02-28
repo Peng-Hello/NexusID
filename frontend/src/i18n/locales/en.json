@@ -119,7 +119,8 @@
         "passwordHint": "Must be at least 8 characters",
         "isActive": "Active (enabled)",
         "createFailed": "Failed to create user",
-        "updateFailed": "Failed to update user"
+        "updateFailed": "Failed to update user",
+        "rolesLabel": "Assign Roles"
     },
     "roles": {
         "title": "Roles",

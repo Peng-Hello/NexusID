@@ -88,6 +88,7 @@ func main() {
 	roleHandler := handler.NewRoleHandler()
 	authHandler := handler.NewAuthHandler(tokenService)
 	oauthFlowHandler := handler.NewOIDCFlowHandler(tokenService)
+	userInfoHandler := handler.NewUserInfoHandler()
 
 	// Auth middleware
 	authMiddleware := middleware.AuthRequired(tokenService)
@@ -150,6 +151,7 @@ func main() {
 	{
 		protectedOauth.POST("/consent", oauthFlowHandler.Consent)
 		protectedOauth.POST("/revoke", oauthFlowHandler.Revoke)
+		protectedOauth.GET("/userinfo", userInfoHandler.GetUserInfo)
 	}
 
 	// OIDC endpoints
