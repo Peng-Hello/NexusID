@@ -259,21 +259,49 @@ function Clients() {
                   <p className="text-xs text-gray-500">{t('clients.redirectUrisHint')}</p>
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="scopes">{t('clients.scopes')}</Label>
-                  <Input
-                    id="scopes"
-                    value={newClient.scopes}
-                    onChange={e => setNewClient({ ...newClient, scopes: e.target.value })}
-                  />
-                  <p className="text-xs text-gray-500">{t('clients.scopesHint')}</p>
+                  <Label>{t('clients.scopes')}</Label>
+                  <div className="flex flex-wrap gap-4 mt-1">
+                    {['openid', 'profile', 'email'].map(scope => (
+                      <div key={scope} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`create-scope-${scope}`}
+                          checked={newClient.scopes.split(/[\s,]+/).includes(scope)}
+                          onCheckedChange={(checked) => {
+                            const current = new Set(newClient.scopes.split(/[\s,]+/).filter(Boolean))
+                            if (checked) current.add(scope)
+                            else current.delete(scope)
+                            setNewClient({ ...newClient, scopes: Array.from(current).join(' ') })
+                          }}
+                        />
+                        <Label htmlFor={`create-scope-${scope}`} className="font-normal cursor-pointer">
+                          {scope}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">{t('clients.scopesHint')}</p>
                 </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="grant_types">{t('clients.grantTypes')}</Label>
-                  <Input
-                    id="grant_types"
-                    value={newClient.grant_types}
-                    onChange={e => setNewClient({ ...newClient, grant_types: e.target.value })}
-                  />
+                <div className="grid gap-2 mt-2">
+                  <Label>{t('clients.grantTypes')}</Label>
+                  <div className="flex flex-wrap gap-4 mt-1">
+                    {['authorization_code', 'client_credentials', 'refresh_token'].map(grant => (
+                      <div key={grant} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`create-grant-${grant}`}
+                          checked={newClient.grant_types.split(/[\s,]+/).includes(grant)}
+                          onCheckedChange={(checked) => {
+                            const current = new Set(newClient.grant_types.split(/[\s,]+/).filter(Boolean))
+                            if (checked) current.add(grant)
+                            else current.delete(grant)
+                            setNewClient({ ...newClient, grant_types: Array.from(current).join(' ') })
+                          }}
+                        />
+                        <Label htmlFor={`create-grant-${grant}`} className="font-normal cursor-pointer text-sm">
+                          {grant}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
                 </div>
                 <div className="flex items-center space-x-2 mt-2">
                   <Checkbox
@@ -441,14 +469,49 @@ function Clients() {
               />
               <p className="text-xs text-gray-500">{t('clients.redirectUrisHint')}</p>
             </div>
-            <div className="grid gap-2">
+            <div className="grid gap-2 mt-2">
               <Label>{t('clients.scopes')}</Label>
-              <Input value={editForm.scopes} onChange={e => setEditForm({ ...editForm, scopes: e.target.value })} />
-              <p className="text-xs text-gray-500">{t('clients.scopesHint')}</p>
+              <div className="flex flex-wrap gap-4 mt-1 border rounded p-3 bg-gray-50">
+                {['openid', 'profile', 'email'].map(scope => (
+                  <div key={scope} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`edit-scope-${scope}`}
+                      checked={editForm.scopes.split(/[\s,]+/).includes(scope)}
+                      onCheckedChange={(checked) => {
+                        const current = new Set(editForm.scopes.split(/[\s,]+/).filter(Boolean))
+                        if (checked) current.add(scope)
+                        else current.delete(scope)
+                        setEditForm({ ...editForm, scopes: Array.from(current).join(' ') })
+                      }}
+                    />
+                    <Label htmlFor={`edit-scope-${scope}`} className="font-normal cursor-pointer text-sm">
+                      {scope}
+                    </Label>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="grid gap-2">
+            <div className="grid gap-2 mt-2">
               <Label>{t('clients.grantTypes')}</Label>
-              <Input value={editForm.grant_types} onChange={e => setEditForm({ ...editForm, grant_types: e.target.value })} />
+              <div className="flex flex-wrap gap-4 mt-1 border rounded p-3 bg-gray-50">
+                {['authorization_code', 'client_credentials', 'refresh_token'].map(grant => (
+                  <div key={grant} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`edit-grant-${grant}`}
+                      checked={editForm.grant_types.split(/[\s,]+/).includes(grant)}
+                      onCheckedChange={(checked) => {
+                        const current = new Set(editForm.grant_types.split(/[\s,]+/).filter(Boolean))
+                        if (checked) current.add(grant)
+                        else current.delete(grant)
+                        setEditForm({ ...editForm, grant_types: Array.from(current).join(' ') })
+                      }}
+                    />
+                    <Label htmlFor={`edit-grant-${grant}`} className="font-normal cursor-pointer text-sm">
+                      {grant}
+                    </Label>
+                  </div>
+                ))}
+              </div>
             </div>
             <div className="flex items-center space-x-2">
               <Checkbox id="edit-public" checked={editForm.is_public} onCheckedChange={(c) => setEditForm({ ...editForm, is_public: c === true })} />
