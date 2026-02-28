@@ -22,7 +22,8 @@
         "tenants": "Tenants",
         "users": "Users",
         "roles": "Roles",
-        "clients": "Clients"
+        "clients": "Clients",
+        "tenantSection": "Tenant"
     },
     "login": {
         "title": "Sign in to NexusID",

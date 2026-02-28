@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Plus, Pencil } from 'lucide-react'
+import { Plus, Pencil, Users, Shield, Key } from 'lucide-react'
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
@@ -19,6 +20,7 @@ interface Tenant {
 }
 
 function Tenants() {
+  const navigate = useNavigate()
   const { t } = useTranslation()
   const [tenants, setTenants] = useState<Tenant[]>([])
   const [loading, setLoading] = useState(true)
@@ -225,25 +227,58 @@ function Tenants() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredTenants.map((tenant) => (
-            <Card key={tenant.id}>
+            <Card key={tenant.id} className="hover:shadow-md transition-shadow">
               <CardHeader>
-                <CardTitle>{tenant.name}</CardTitle>
-                <CardDescription>{tenant.slug}</CardDescription>
+                <div className="flex items-start justify-between">
+                  <div>
+                    <CardTitle className="text-lg">{tenant.name}</CardTitle>
+                    <CardDescription className="mt-0.5 font-mono text-xs">{tenant.slug}</CardDescription>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${tenant.is_active
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-gray-100 text-gray-800'
+                      }`}>
+                      {tenant.is_active ? t('common.active') : t('common.inactive')}
+                    </span>
+                    <Button variant="ghost" size="sm" onClick={() => openEditDialog(tenant)} title={t('common.edit')}>
+                      <Pencil className="w-3.5 h-3.5" />
+                    </Button>
+                  </div>
+                </div>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-gray-600 mb-4">
+                <p className="text-sm text-gray-500 mb-4 min-h-[36px]">
                   {tenant.description || t('common.noDescription')}
                 </p>
-                <div className="flex items-center justify-between">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${tenant.is_active
-                    ? 'bg-green-100 text-green-800'
-                    : 'bg-gray-100 text-gray-800'
-                    }`}>
-                    {tenant.is_active ? t('common.active') : t('common.inactive')}
-                  </span>
-                  <Button variant="outline" size="sm" onClick={() => openEditDialog(tenant)}>
-                    <Pencil className="w-3 h-3 mr-1" />
-                    {t('common.edit')}
+                {/* Management entry buttons */}
+                <div className="grid grid-cols-3 gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex flex-col h-auto py-2 gap-1"
+                    onClick={() => navigate(`/tenants/${tenant.id}/users`)}
+                  >
+                    <Users className="w-4 h-4" />
+                    <span className="text-xs">{t('nav.users')}</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex flex-col h-auto py-2 gap-1"
+                    onClick={() => navigate(`/tenants/${tenant.id}/roles`)}
+                  >
+                    <Shield className="w-4 h-4" />
+                    <span className="text-xs">{t('nav.roles')}</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex flex-col h-auto py-2 gap-1"
+                    onClick={() => navigate(`/tenants/${tenant.id}/clients`)}
+                  >
+                    <Key className="w-4 h-4" />
+                    <span className="text-xs">{t('nav.clients')}</span>
                   </Button>
                 </div>
               </CardContent>

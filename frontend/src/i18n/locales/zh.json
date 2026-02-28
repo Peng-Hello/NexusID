@@ -22,7 +22,8 @@
         "tenants": "租户",
         "users": "用户",
         "roles": "角色",
-        "clients": "客户端"
+        "clients": "客户端",
+        "tenantSection": "当前租户"
     },
     "login": {
         "title": "登录 NexusID",
