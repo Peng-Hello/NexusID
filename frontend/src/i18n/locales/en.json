@@ -156,11 +156,19 @@
         "grantTypes": "Grant Types",
         "publicClient": "Public Client",
         "publicClientHint": "Enable for SPAs and native apps (no client secret required)",
+        "isActive": "Active (enabled)",
+        "confidential": "Confidential",
         "createClient": "Create Client",
+        "createFailed": "Failed to create client",
         "createdSuccess": "Client Created Successfully!",
         "createdSecretHint": "Please copy your client secret below. You will not be able to see it again!",
         "clientSecret": "CLIENT SECRET",
-        "rotateSecret": "Rotate Secret"
+        "copied": "Copied!",
+        "editTitle": "Edit Client",
+        "updateFailed": "Failed to update client",
+        "rotateSecret": "Rotate Secret",
+        "rotateSecretTitle": "Rotate Client Secret",
+        "rotateSecretWarning": "This will generate a new secret and invalidate the old one. Any applications using the old secret will stop working. Are you sure?"
     },
     "consent": {
         "title": "Authorization Request",

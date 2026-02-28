@@ -156,11 +156,19 @@
         "grantTypes": "授权类型",
         "publicClient": "公开客户端",
         "publicClientHint": "为 SPA 和原生应用启用（无需客户端密钥）",
+        "isActive": "启用（激活状态）",
+        "confidential": "机密",
         "createClient": "创建客户端",
+        "createFailed": "创建客户端失败",
         "createdSuccess": "客户端创建成功！",
         "createdSecretHint": "请复制下方的客户端密钥，此密钥仅显示一次！",
         "clientSecret": "客户端密钥",
-        "rotateSecret": "轮换密钥"
+        "copied": "已复制！",
+        "editTitle": "编辑客户端",
+        "updateFailed": "更新客户端失败",
+        "rotateSecret": "轮换密钥",
+        "rotateSecretTitle": "轮换客户端密钥",
+        "rotateSecretWarning": "这将生成新的密钥并使旧密钥失效。使用旧密钥的应用将无法正常工作。确定要继续吗？"
     },
     "consent": {
         "title": "授权请求",
