@@ -295,7 +295,9 @@ func (r *RoleRepository) AssignRole(userID, roleID int64) error {
 		UserID: userID,
 		RoleID: roleID,
 	}
-	return r.db.Create(userRole).Error
+	// Use FirstOrCreate to avoid duplicate key errors on re-assignment
+	result := r.db.Where("user_id = ? AND role_id = ?", userID, roleID).FirstOrCreate(userRole)
+	return result.Error
 }
 
 // RevokeRole revokes a role from a user

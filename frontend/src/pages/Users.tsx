@@ -156,25 +156,34 @@ function Users() {
     }
   }
 
-  // Toggle role assignment
   const handleToggleRole = async (role: Role, checked: boolean) => {
     if (!editingUser) return
+    setEditError('')
     const token = localStorage.getItem('accessToken')
     const endpoint = checked ? 'assign' : 'revoke'
-    await fetch(`/api/v1/tenants/${tenantId}/roles/${endpoint}`, {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: editingUser.id, role_id: role.id }),
-    })
-    setUserRoleIds(prev => {
-      const next = new Set(prev)
-      if (checked) {
-        next.add(role.id)
-      } else {
-        next.delete(role.id)
+    try {
+      const response = await fetch(`/api/v1/tenants/${tenantId}/roles/${endpoint}`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: editingUser.id, role_id: role.id }),
+      })
+      if (!response.ok) {
+        const data = await response.json()
+        setEditError(data.error || t('users.updateFailed'))
+        return
       }
-      return next
-    })
+      setUserRoleIds(prev => {
+        const next = new Set(prev)
+        if (checked) {
+          next.add(role.id)
+        } else {
+          next.delete(role.id)
+        }
+        return next
+      })
+    } catch {
+      setEditError(t('users.updateFailed'))
+    }
   }
 
   // Delete user
@@ -351,7 +360,7 @@ function Users() {
       )}
 
       {/* Edit User Dialog */}
-      <Dialog open={!!editingUser} onOpenChange={(open) => { if (!open) setEditingUser(null) }}>
+      <Dialog open={!!editingUser} onOpenChange={(open) => { if (!open) { setEditingUser(null); fetchUsers(); } }}>
         <DialogContent className="sm:max-w-[480px]">
           <DialogHeader>
             <DialogTitle>{t('users.editTitle')}</DialogTitle>
