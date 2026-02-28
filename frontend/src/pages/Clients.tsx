@@ -273,8 +273,8 @@ function Clients() {
                             setNewClient({ ...newClient, scopes: Array.from(current).join(' ') })
                           }}
                         />
-                        <Label htmlFor={`create-scope-${scope}`} className="font-normal cursor-pointer">
-                          {scope}
+                        <Label htmlFor={`create-scope-${scope}`} className="font-normal cursor-pointer text-sm">
+                          {t(`clients.scope_${scope}`)}
                         </Label>
                       </div>
                     ))}
@@ -297,7 +297,7 @@ function Clients() {
                           }}
                         />
                         <Label htmlFor={`create-grant-${grant}`} className="font-normal cursor-pointer text-sm">
-                          {grant}
+                          {t(`clients.grant_${grant}`)}
                         </Label>
                       </div>
                     ))}
@@ -485,7 +485,7 @@ function Clients() {
                       }}
                     />
                     <Label htmlFor={`edit-scope-${scope}`} className="font-normal cursor-pointer text-sm">
-                      {scope}
+                      {t(`clients.scope_${scope}`)}
                     </Label>
                   </div>
                 ))}
@@ -507,7 +507,7 @@ function Clients() {
                       }}
                     />
                     <Label htmlFor={`edit-grant-${grant}`} className="font-normal cursor-pointer text-sm">
-                      {grant}
+                      {t(`clients.grant_${grant}`)}
                     </Label>
                   </div>
                 ))}
