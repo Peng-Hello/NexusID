@@ -4,7 +4,7 @@
 
 # NexusID
 
-*[English Version](README.md)*
+*[English Version](README.md)* ｜ *[📖 新手使用指引](doc/user_guide.md)*
 
 NexusID 是一个基于 Go（后端）和 React（前端）构建的全栈单点登录 (SSO) 平台。它使用 OpenID Connect (OIDC) 协议提供统一的身份验证和访问管理功能。
 
