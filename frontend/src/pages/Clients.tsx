@@ -7,6 +7,7 @@ import { Input } from '../components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog'
 import { Label } from '../components/ui/label'
+import { Switch } from '../components/ui/switch'
 import { Checkbox } from '../components/ui/checkbox'
 import { Textarea } from '../components/ui/textarea'
 
@@ -106,8 +107,8 @@ function Clients() {
         body: JSON.stringify({
           name: newClient.name,
           redirect_uris: newClient.redirect_uris.split(',').map(s => s.trim()).filter(Boolean),
-          scopes: newClient.scopes.split(',').map(s => s.trim()).filter(Boolean),
-          grant_types: newClient.grant_types.split(',').map(s => s.trim()).filter(Boolean),
+          scopes: Array.from(new Set(['openid', ...newClient.scopes.split(/[\s,]+/).filter(Boolean)])),
+          grant_types: newClient.grant_types.split(/[\s,]+/).filter(Boolean),
           is_public: newClient.is_public
         })
       })
@@ -165,7 +166,7 @@ function Clients() {
         body: JSON.stringify({
           name: editForm.name,
           redirect_uris: editForm.redirect_uris.split('\n').map(s => s.trim()).filter(Boolean),
-          scopes: editForm.scopes.split(/[\s,]+/).filter(Boolean),
+          scopes: Array.from(new Set(['openid', ...editForm.scopes.split(/[\s,]+/).filter(Boolean)])),
           grant_types: editForm.grant_types.split(/[\s,]+/).filter(Boolean),
           is_public: editForm.is_public,
           is_active: editForm.is_active,
@@ -260,10 +261,10 @@ function Clients() {
                 </div>
                 <div className="grid gap-2">
                   <Label>{t('clients.scopes')}</Label>
-                  <div className="flex flex-wrap gap-4 mt-1">
-                    {['openid', 'profile', 'email'].map(scope => (
+                  <div className="flex flex-col gap-3 mt-1">
+                    {['profile', 'email'].map(scope => (
                       <div key={scope} className="flex items-center space-x-2">
-                        <Checkbox
+                        <Switch
                           id={`create-scope-${scope}`}
                           checked={newClient.scopes.split(/[\s,]+/).includes(scope)}
                           onCheckedChange={(checked) => {
@@ -283,10 +284,10 @@ function Clients() {
                 </div>
                 <div className="grid gap-2 mt-2">
                   <Label>{t('clients.grantTypes')}</Label>
-                  <div className="flex flex-wrap gap-4 mt-1">
+                  <div className="flex flex-col gap-3 mt-1">
                     {['authorization_code', 'client_credentials', 'refresh_token'].map(grant => (
                       <div key={grant} className="flex items-center space-x-2">
-                        <Checkbox
+                        <Switch
                           id={`create-grant-${grant}`}
                           checked={newClient.grant_types.split(/[\s,]+/).includes(grant)}
                           onCheckedChange={(checked) => {
@@ -471,10 +472,10 @@ function Clients() {
             </div>
             <div className="grid gap-2 mt-2">
               <Label>{t('clients.scopes')}</Label>
-              <div className="flex flex-wrap gap-4 mt-1 border rounded p-3 bg-gray-50">
-                {['openid', 'profile', 'email'].map(scope => (
+              <div className="flex flex-col gap-3 mt-1 border rounded p-3 bg-gray-50">
+                {['profile', 'email'].map(scope => (
                   <div key={scope} className="flex items-center space-x-2">
-                    <Checkbox
+                    <Switch
                       id={`edit-scope-${scope}`}
                       checked={editForm.scopes.split(/[\s,]+/).includes(scope)}
                       onCheckedChange={(checked) => {
@@ -493,10 +494,10 @@ function Clients() {
             </div>
             <div className="grid gap-2 mt-2">
               <Label>{t('clients.grantTypes')}</Label>
-              <div className="flex flex-wrap gap-4 mt-1 border rounded p-3 bg-gray-50">
+              <div className="flex flex-col gap-3 mt-1 border rounded p-3 bg-gray-50">
                 {['authorization_code', 'client_credentials', 'refresh_token'].map(grant => (
                   <div key={grant} className="flex items-center space-x-2">
-                    <Checkbox
+                    <Switch
                       id={`edit-grant-${grant}`}
                       checked={editForm.grant_types.split(/[\s,]+/).includes(grant)}
                       onCheckedChange={(checked) => {
