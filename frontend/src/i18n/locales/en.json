@@ -23,7 +23,8 @@
         "users": "Users",
         "roles": "Roles",
         "clients": "Clients",
-        "tenantSection": "Tenant"
+        "tenantSection": "Tenant",
+        "changePassword": "Change Password"
     },
     "login": {
         "title": "Sign in to NexusID",
@@ -178,5 +179,23 @@
         "scope_openid": "Access your identity",
         "scope_profile": "View your profile information",
         "scope_email": "View your email address"
+    },
+    "changePassword": {
+        "title": "Change Password",
+        "description": "Update your account password",
+        "currentPasswordLabel": "Current Password",
+        "currentPasswordPlaceholder": "Enter your current password",
+        "newPasswordLabel": "New Password",
+        "newPasswordPlaceholder": "Enter your new password",
+        "confirmPasswordLabel": "Confirm New Password",
+        "confirmPasswordPlaceholder": "Confirm your new password",
+        "passwordHint": "Must be at least 8 characters",
+        "submit": "Change Password",
+        "submitting": "Changing password...",
+        "success": "Password changed successfully",
+        "error": "Failed to change password",
+        "incorrectPassword": "Current password is incorrect",
+        "passwordsNotMatch": "New passwords do not match",
+        "passwordTooShort": "Password must be at least 8 characters"
     }
 }

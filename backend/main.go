@@ -154,6 +154,13 @@ func main() {
 		protectedOauth.GET("/userinfo", userInfoHandler.GetUserInfo)
 	}
 
+	// Protected user routes (requires authentication)
+	user := v1.Group("/user")
+	user.Use(authMiddleware)
+	{
+		user.POST("/change-password", userHandler.ChangePassword)
+	}
+
 	// OIDC endpoints
 	r.GET("/.well-known/openid-configuration", oidcHandler.Discovery)
 	r.GET("/.well-known/jwks.json", oidcHandler.JWKS)

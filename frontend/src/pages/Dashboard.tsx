@@ -3,6 +3,7 @@ import { Link, Outlet, useNavigate, useLocation, useMatch } from 'react-router-d
 import { useTranslation } from 'react-i18next'
 import { Button } from '../components/ui/button'
 import LanguageSwitcher from '../components/LanguageSwitcher'
+import { ChangePasswordDialog } from '../components/ChangePasswordDialog'
 import {
   LayoutDashboard,
   Users,
@@ -13,6 +14,7 @@ import {
   Menu,
   X,
   ChevronRight,
+  Settings,
 } from 'lucide-react'
 
 interface DashboardProps {
@@ -25,6 +27,7 @@ function Dashboard({ children }: DashboardProps) {
   const { t } = useTranslation()
   const [user, setUser] = useState<Record<string, string> | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [passwordDialogOpen, setPasswordDialogOpen] = useState(false)
 
   // Extract tenantId from current URL if we're inside a tenant sub-page
   const tenantMatch = useMatch('/tenants/:tenantId/*')
@@ -166,14 +169,23 @@ function Dashboard({ children }: DashboardProps) {
           </nav>
 
           <div className="p-4 border-t">
-            <div className="flex items-center mb-4">
-              <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold">
-                {user.full_name?.charAt(0).toUpperCase() || user.email.charAt(0).toUpperCase()}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center flex-1 min-w-0">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold shadow-sm">
+                  {user.full_name?.charAt(0).toUpperCase() || user.email.charAt(0).toUpperCase()}
+                </div>
+                <div className="ml-3 flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-gray-900 truncate">{user.full_name || 'User'}</p>
+                  <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                </div>
               </div>
-              <div className="ml-3 flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">{user.full_name || 'User'}</p>
-                <p className="text-xs text-gray-500 truncate">{user.email}</p>
-              </div>
+              <button
+                onClick={() => setPasswordDialogOpen(true)}
+                className="ml-2 p-2 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-blue-600 transition-colors"
+                title={t('nav.changePassword')}
+              >
+                <Settings className="w-5 h-5" />
+              </button>
             </div>
             <Button onClick={handleLogout} variant="outline" className="w-full">
               <LogOut className="w-4 h-4 mr-2" />
@@ -201,6 +213,12 @@ function Dashboard({ children }: DashboardProps) {
           {children || <Outlet />}
         </main>
       </div>
+
+      {/* Change Password Dialog */}
+      <ChangePasswordDialog
+        open={passwordDialogOpen}
+        onOpenChange={setPasswordDialogOpen}
+      />
     </div>
   )
 }

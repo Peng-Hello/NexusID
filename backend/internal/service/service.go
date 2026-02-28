@@ -348,6 +348,29 @@ func (s *UserService) UpdateLastLogin(userID int64) error {
 	return s.userRepo.UpdateLastLogin(userID)
 }
 
+// ChangePassword changes user password
+func (s *UserService) ChangePassword(tenantID, userID int64, newPassword string) error {
+	// Get user with password hash
+	user, err := s.GetByIDModel(tenantID, userID)
+	if err != nil {
+		return err
+	}
+
+	// Hash new password
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+	if err != nil {
+		return fmt.Errorf("failed to hash password: %w", err)
+	}
+
+	// Update password
+	user.PasswordHash = string(hashedPassword)
+	if err := s.userRepo.Update(user); err != nil {
+		return fmt.Errorf("failed to update password: %w", err)
+	}
+
+	return nil
+}
+
 // toDTO converts a user model to DTO
 func (s *UserService) toDTO(user *models.User) *dto.UserDTO {
 	roles := make([]string, len(user.Roles))
