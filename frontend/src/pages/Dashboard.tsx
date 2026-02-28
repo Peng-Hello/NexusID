@@ -61,8 +61,8 @@ function Dashboard({ children }: DashboardProps) {
   }
 
   const navigation = [
-    { name: t('nav.dashboard'), href: '/dashboard', icon: LayoutDashboard },
-    { name: t('nav.tenants'), href: '/tenants', icon: Building },
+    { name: t('nav.dashboard'), href: '/dashboard', icon: LayoutDashboard, exact: true },
+    { name: t('nav.tenants'), href: '/tenants', icon: Building, exact: true },
     { name: t('nav.users'), href: '/tenants/1/users', icon: Users },
     { name: t('nav.roles'), href: '/tenants/1/roles', icon: Shield },
     { name: t('nav.clients'), href: '/tenants/1/clients', icon: Key },
@@ -99,15 +99,15 @@ function Dashboard({ children }: DashboardProps) {
           <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
             {navigation.map((item) => {
               const Icon = item.icon
-              const isActive = location.pathname === item.href || (item.href !== '/dashboard' && location.pathname.startsWith(item.href))
+              const isActive = item.exact ? location.pathname === item.href : location.pathname.startsWith(item.href)
               return (
                 <Link
                   key={item.href}
                   to={item.href}
                   onClick={() => setSidebarOpen(false)}
                   className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors ${isActive
-                      ? 'bg-blue-50 text-blue-700'
-                      : 'text-gray-700 hover:bg-gray-100'
+                    ? 'bg-blue-50 text-blue-700'
+                    : 'text-gray-700 hover:bg-gray-100'
                     }`}
                 >
                   <Icon className="w-5 h-5 mr-3" />
@@ -153,7 +153,7 @@ function Dashboard({ children }: DashboardProps) {
               <Menu className="w-6 h-6" />
             </button>
             <h2 className="text-lg font-semibold text-gray-900">
-              {navigation.find((item) => location.pathname === item.href || (item.href !== '/dashboard' && location.pathname.startsWith(item.href)))?.name || t('nav.dashboard')}
+              {navigation.find((item) => item.exact ? location.pathname === item.href : location.pathname.startsWith(item.href))?.name || t('nav.dashboard')}
             </h2>
           </div>
           <LanguageSwitcher />

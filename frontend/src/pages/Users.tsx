@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Plus, Pencil, Trash2 } from 'lucide-react'
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
 import { Card, CardContent } from '../components/ui/card'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog'
+import { Label } from '../components/ui/label'
+import { Checkbox } from '../components/ui/checkbox'
 
 interface User {
   id: number
@@ -23,17 +26,28 @@ function Users() {
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
 
-  useEffect(() => {
-    if (tenantId) fetchUsers()
-  }, [tenantId])
+  // Create user state
+  const [showCreateDialog, setShowCreateDialog] = useState(false)
+  const [createForm, setCreateForm] = useState({ email: '', password: '', full_name: '' })
+  const [createError, setCreateError] = useState('')
+  const [creating, setCreating] = useState(false)
 
-  const fetchUsers = async () => {
+  // Edit user state
+  const [editingUser, setEditingUser] = useState<User | null>(null)
+  const [editForm, setEditForm] = useState({ full_name: '', is_active: true })
+  const [editError, setEditError] = useState('')
+  const [saving, setSaving] = useState(false)
+
+  // Delete user state
+  const [deletingUser, setDeletingUser] = useState<User | null>(null)
+  const [deleting, setDeleting] = useState(false)
+
+  const fetchUsers = useCallback(async () => {
     try {
       const token = localStorage.getItem('accessToken')
       const response = await fetch(`/api/v1/tenants/${tenantId}/users?page=1&page_size=50`, {
         headers: { 'Authorization': `Bearer ${token}` },
       })
-
       if (response.ok) {
         const data = await response.json()
         setUsers(data.data || [])
@@ -43,12 +57,101 @@ function Users() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [tenantId])
+
+  useEffect(() => {
+    if (tenantId) fetchUsers()
+  }, [tenantId, fetchUsers])
 
   const filteredUsers = users.filter(user =>
     user.email.toLowerCase().includes(search.toLowerCase()) ||
     (user.full_name && user.full_name.toLowerCase().includes(search.toLowerCase()))
   )
+
+  // Create user
+  const handleCreate = async () => {
+    setCreateError('')
+    setCreating(true)
+    try {
+      const token = localStorage.getItem('accessToken')
+      const response = await fetch(`/api/v1/tenants/${tenantId}/users`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(createForm),
+      })
+      const data = await response.json()
+      if (response.ok) {
+        setShowCreateDialog(false)
+        setCreateForm({ email: '', password: '', full_name: '' })
+        fetchUsers()
+      } else {
+        setCreateError(data.error || t('users.createFailed'))
+      }
+    } catch {
+      setCreateError(t('users.createFailed'))
+    } finally {
+      setCreating(false)
+    }
+  }
+
+  // Edit user
+  const openEditDialog = (user: User) => {
+    setEditingUser(user)
+    setEditForm({ full_name: user.full_name || '', is_active: user.is_active })
+    setEditError('')
+  }
+
+  const handleEdit = async () => {
+    if (!editingUser) return
+    setEditError('')
+    setSaving(true)
+    try {
+      const token = localStorage.getItem('accessToken')
+      const response = await fetch(`/api/v1/tenants/${tenantId}/users/${editingUser.id}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editForm),
+      })
+      const data = await response.json()
+      if (response.ok) {
+        setEditingUser(null)
+        fetchUsers()
+      } else {
+        setEditError(data.error || t('users.updateFailed'))
+      }
+    } catch {
+      setEditError(t('users.updateFailed'))
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  // Delete user
+  const handleDelete = async () => {
+    if (!deletingUser) return
+    setDeleting(true)
+    try {
+      const token = localStorage.getItem('accessToken')
+      const response = await fetch(`/api/v1/tenants/${tenantId}/users/${deletingUser.id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` },
+      })
+      if (response.ok) {
+        setDeletingUser(null)
+        fetchUsers()
+      }
+    } catch (error) {
+      console.error('Failed to delete user:', error)
+    } finally {
+      setDeleting(false)
+    }
+  }
 
   return (
     <div>
@@ -57,10 +160,66 @@ function Users() {
           <h1 className="text-2xl font-bold text-gray-900">{t('users.title')}</h1>
           <p className="text-gray-600">{t('users.subtitle')}</p>
         </div>
-        <Button>
-          <Plus className="w-4 h-4 mr-2" />
-          {t('users.addUser')}
-        </Button>
+
+        {/* Create User Dialog */}
+        <Dialog open={showCreateDialog} onOpenChange={(open) => {
+          setShowCreateDialog(open)
+          if (!open) { setCreateForm({ email: '', password: '', full_name: '' }); setCreateError('') }
+        }}>
+          <DialogTrigger asChild>
+            <Button>
+              <Plus className="w-4 h-4 mr-2" />
+              {t('users.addUser')}
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[450px]">
+            <DialogHeader>
+              <DialogTitle>{t('users.createTitle')}</DialogTitle>
+              <DialogDescription>{t('users.createDesc')}</DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              {createError && (
+                <div className="p-3 bg-red-50 text-red-600 text-sm rounded">{createError}</div>
+              )}
+              <div className="grid gap-2">
+                <Label htmlFor="create-name">{t('users.fullNameLabel')}</Label>
+                <Input
+                  id="create-name"
+                  value={createForm.full_name}
+                  onChange={e => setCreateForm({ ...createForm, full_name: e.target.value })}
+                  placeholder={t('users.fullNamePlaceholder')}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="create-email">{t('users.emailLabel')} *</Label>
+                <Input
+                  id="create-email"
+                  type="email"
+                  value={createForm.email}
+                  onChange={e => setCreateForm({ ...createForm, email: e.target.value })}
+                  placeholder={t('users.emailPlaceholder')}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="create-password">{t('users.passwordLabel')} *</Label>
+                <Input
+                  id="create-password"
+                  type="password"
+                  value={createForm.password}
+                  onChange={e => setCreateForm({ ...createForm, password: e.target.value })}
+                  placeholder={t('users.passwordPlaceholder')}
+                />
+                <p className="text-xs text-gray-500">{t('users.passwordHint')}</p>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setShowCreateDialog(false)}>{t('common.cancel')}</Button>
+              <Button onClick={handleCreate} disabled={!createForm.email || !createForm.password || creating}>
+                {creating ? t('common.loading') : t('common.create')}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="mb-6">
@@ -85,7 +244,7 @@ function Users() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('nav.users')}</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('nav.roles')}</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('users.statusColumn')}</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('users.actionsColumn')}</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -99,7 +258,7 @@ function Users() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex flex-wrap gap-1">
-                        {user.roles.map((role) => (
+                        {(user.roles ?? []).map((role) => (
                           <span key={role} className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-800">
                             {role}
                           </span>
@@ -115,10 +274,18 @@ function Users() {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <button className="text-blue-600 hover:text-blue-900 mr-3">
+                      <button
+                        className="text-blue-600 hover:text-blue-900 mr-3"
+                        onClick={() => openEditDialog(user)}
+                        title={t('common.edit')}
+                      >
                         <Pencil className="w-4 h-4" />
                       </button>
-                      <button className="text-red-600 hover:text-red-900">
+                      <button
+                        className="text-red-600 hover:text-red-900"
+                        onClick={() => setDeletingUser(user)}
+                        title={t('common.delete')}
+                      >
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </td>
@@ -137,6 +304,61 @@ function Users() {
           </CardContent>
         </Card>
       )}
+
+      {/* Edit User Dialog */}
+      <Dialog open={!!editingUser} onOpenChange={(open) => { if (!open) setEditingUser(null) }}>
+        <DialogContent className="sm:max-w-[450px]">
+          <DialogHeader>
+            <DialogTitle>{t('users.editTitle')}</DialogTitle>
+            <DialogDescription>{editingUser?.email}</DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            {editError && (
+              <div className="p-3 bg-red-50 text-red-600 text-sm rounded">{editError}</div>
+            )}
+            <div className="grid gap-2">
+              <Label htmlFor="edit-name">{t('users.fullNameLabel')}</Label>
+              <Input
+                id="edit-name"
+                value={editForm.full_name}
+                onChange={e => setEditForm({ ...editForm, full_name: e.target.value })}
+              />
+            </div>
+            <div className="flex items-center space-x-2 mt-2">
+              <Checkbox
+                id="edit-active"
+                checked={editForm.is_active}
+                onCheckedChange={(checked) => setEditForm({ ...editForm, is_active: checked === true })}
+              />
+              <Label htmlFor="edit-active" className="font-normal">{t('users.isActive')}</Label>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditingUser(null)}>{t('common.cancel')}</Button>
+            <Button onClick={handleEdit} disabled={saving}>
+              {saving ? t('common.loading') : t('common.save')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={!!deletingUser} onOpenChange={(open) => { if (!open) setDeletingUser(null) }}>
+        <DialogContent className="sm:max-w-[400px]">
+          <DialogHeader>
+            <DialogTitle>{t('users.deleteTitle')}</DialogTitle>
+            <DialogDescription>
+              {t('users.deleteConfirm', { email: deletingUser?.email })}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDeletingUser(null)}>{t('common.cancel')}</Button>
+            <Button variant="destructive" onClick={handleDelete} disabled={deleting}>
+              {deleting ? t('common.loading') : t('common.delete')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

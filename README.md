@@ -115,6 +115,15 @@ npm run dev
 
 The frontend will be available at `http://localhost:5173`
 
+5. Login with the default admin account:
+
+| Field    | Value                |
+|----------|----------------------|
+| Email    | `admin@nexusid.com`  |
+| Password | `admin12345678`      |
+
+> ⚠️ **Important**: Please change the default password immediately after your first login in a production environment.
+
 ### Manual Setup
 
 #### Backend
