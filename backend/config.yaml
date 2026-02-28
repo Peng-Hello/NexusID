@@ -1,0 +1,29 @@
+server:
+  port: 8080
+  mode: debug
+  read_timeout: 60
+  write_timeout: 60
+
+database:
+  host: localhost
+  port: 3309
+  user: nexus_user
+  password: nexus_password
+  dbname: nexus_id
+  max_open_conns: 100
+  max_idle_conns: 10
+
+redis:
+  host: localhost
+  port: 6380
+  password: ""
+  db: 0
+  pool_size: 100
+  min_idle_conn: 10
+
+jwt:
+  issuer: http://localhost:8080
+  access_token_expiry: 3600     # 1 hour in seconds
+  refresh_token_expiry: 2592000 # 30 days in seconds
+  private_key_path: ./keys/private.pem
+  public_key_path: ./keys/public.pem

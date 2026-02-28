@@ -1,0 +1,253 @@
+{"level":"info","timestamp":"2026-02-25T23:58:42.001Z","caller":"runtime/proc.go:283","msg":"Starting NexusID","mode":"release","port":8080}
+{"level":"info","timestamp":"2026-02-25T23:58:42.006Z","caller":"app/main.go:49","msg":"Database connected successfully","host":"mysql","port":3306}
+{"level":"info","timestamp":"2026-02-25T23:58:42.010Z","caller":"app/main.go:54","msg":"Redis connected successfully","addr":"redis:6379"}
+{"level":"info","timestamp":"2026-02-25T23:58:42.010Z","caller":"jwt/keys.go:47","msg":"Generating new RSA key pair"}
+{"level":"info","timestamp":"2026-02-25T23:58:42.144Z","caller":"jwt/keys.go:71","msg":"Generated and saved new RSA key pair"}
+{"level":"info","timestamp":"2026-02-25T23:58:42.144Z","caller":"app/main.go:61","msg":"JWT keys loaded successfully"}
+panic: ':tenant_id' in new path '/api/v1/tenants/:tenant_id/users' conflicts with existing wildcard ':id' in existing prefix '/api/v1/tenants/:id'
+
+goroutine 1 [running]:
+github.com/gin-gonic/gin.(*node).addRoute(0x135d39c?, {0xc00003c120, 0x20}, {0xc00040b158, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/tree.go:240 +0xb6a
+github.com/gin-gonic/gin.(*Engine).addRoute(0xc0000b4000, {0x135d39c, 0x3}, {0xc00003c120, 0x20}, {0xc00040b158, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/gin.go:367 +0x252
+github.com/gin-gonic/gin.(*RouterGroup).handle(0xc0004aa1c0, {0x135d39c, 0x3}, {0x1372b1a?, 0x0?}, {0xc0004c8218, 0x1, 0xc00035c8f0?})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:89 +0x13e
+github.com/gin-gonic/gin.(*RouterGroup).GET(...)
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:117
+main.main()
+	/app/main.go:114 +0x14f8
+{"level":"info","timestamp":"2026-02-25T23:58:43.130Z","caller":"runtime/proc.go:283","msg":"Starting NexusID","mode":"release","port":8080}
+{"level":"info","timestamp":"2026-02-25T23:58:43.132Z","caller":"app/main.go:49","msg":"Database connected successfully","host":"mysql","port":3306}
+{"level":"info","timestamp":"2026-02-25T23:58:43.135Z","caller":"app/main.go:54","msg":"Redis connected successfully","addr":"redis:6379"}
+{"level":"info","timestamp":"2026-02-25T23:58:43.136Z","caller":"jwt/keys.go:47","msg":"Loaded existing JWT keys"}
+{"level":"info","timestamp":"2026-02-25T23:58:43.136Z","caller":"app/main.go:61","msg":"JWT keys loaded successfully"}
+panic: ':tenant_id' in new path '/api/v1/tenants/:tenant_id/users' conflicts with existing wildcard ':id' in existing prefix '/api/v1/tenants/:id'
+
+goroutine 1 [running]:
+github.com/gin-gonic/gin.(*node).addRoute(0x135d39c?, {0xc00003c120, 0x20}, {0xc00013a270, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/tree.go:240 +0xb6a
+github.com/gin-gonic/gin.(*Engine).addRoute(0xc0000b4000, {0x135d39c, 0x3}, {0xc00003c120, 0x20}, {0xc00013a270, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/gin.go:367 +0x252
+github.com/gin-gonic/gin.(*RouterGroup).handle(0xc0004aa240, {0x135d39c, 0x3}, {0x1372b1a?, 0x0?}, {0xc00012e2c8, 0x1, 0xc00035c8f0?})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:89 +0x13e
+github.com/gin-gonic/gin.(*RouterGroup).GET(...)
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:117
+main.main()
+	/app/main.go:114 +0x14f8
+{"level":"info","timestamp":"2026-02-25T23:58:43.969Z","caller":"runtime/proc.go:283","msg":"Starting NexusID","mode":"release","port":8080}
+{"level":"info","timestamp":"2026-02-25T23:58:43.972Z","caller":"app/main.go:49","msg":"Database connected successfully","host":"mysql","port":3306}
+{"level":"info","timestamp":"2026-02-25T23:58:43.975Z","caller":"app/main.go:54","msg":"Redis connected successfully","addr":"redis:6379"}
+{"level":"info","timestamp":"2026-02-25T23:58:43.975Z","caller":"jwt/keys.go:47","msg":"Loaded existing JWT keys"}
+{"level":"info","timestamp":"2026-02-25T23:58:43.975Z","caller":"app/main.go:61","msg":"JWT keys loaded successfully"}
+panic: ':tenant_id' in new path '/api/v1/tenants/:tenant_id/users' conflicts with existing wildcard ':id' in existing prefix '/api/v1/tenants/:id'
+
+goroutine 1 [running]:
+github.com/gin-gonic/gin.(*node).addRoute(0x135d39c?, {0xc00013c0a0, 0x20}, {0xc0003a2270, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/tree.go:240 +0xb6a
+github.com/gin-gonic/gin.(*Engine).addRoute(0xc0002c04e0, {0x135d39c, 0x3}, {0xc00013c0a0, 0x20}, {0xc0003a2270, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/gin.go:367 +0x252
+github.com/gin-gonic/gin.(*RouterGroup).handle(0xc0003a4140, {0x135d39c, 0x3}, {0x1372b1a?, 0x0?}, {0xc0003962c8, 0x1, 0xc0002bc8f0?})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:89 +0x13e
+github.com/gin-gonic/gin.(*RouterGroup).GET(...)
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:117
+main.main()
+	/app/main.go:114 +0x14f8
+{"level":"info","timestamp":"2026-02-25T23:58:44.739Z","caller":"runtime/proc.go:283","msg":"Starting NexusID","mode":"release","port":8080}
+{"level":"info","timestamp":"2026-02-25T23:58:44.741Z","caller":"app/main.go:49","msg":"Database connected successfully","host":"mysql","port":3306}
+{"level":"info","timestamp":"2026-02-25T23:58:44.745Z","caller":"app/main.go:54","msg":"Redis connected successfully","addr":"redis:6379"}
+{"level":"info","timestamp":"2026-02-25T23:58:44.746Z","caller":"jwt/keys.go:47","msg":"Loaded existing JWT keys"}
+{"level":"info","timestamp":"2026-02-25T23:58:44.746Z","caller":"app/main.go:61","msg":"JWT keys loaded successfully"}
+panic: ':tenant_id' in new path '/api/v1/tenants/:tenant_id/users' conflicts with existing wildcard ':id' in existing prefix '/api/v1/tenants/:id'
+
+goroutine 1 [running]:
+github.com/gin-gonic/gin.(*node).addRoute(0x135d39c?, {0xc0004260e0, 0x20}, {0xc00000e2a0, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/tree.go:240 +0xb6a
+github.com/gin-gonic/gin.(*Engine).addRoute(0xc0002e84e0, {0x135d39c, 0x3}, {0xc0004260e0, 0x20}, {0xc00000e2a0, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/gin.go:367 +0x252
+github.com/gin-gonic/gin.(*RouterGroup).handle(0xc0000c6300, {0x135d39c, 0x3}, {0x1372b1a?, 0x0?}, {0xc0001224d0, 0x1, 0xc0002e48f0?})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:89 +0x13e
+github.com/gin-gonic/gin.(*RouterGroup).GET(...)
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:117
+main.main()
+	/app/main.go:114 +0x14f8
+{"level":"info","timestamp":"2026-02-25T23:58:45.808Z","caller":"runtime/proc.go:283","msg":"Starting NexusID","mode":"release","port":8080}
+{"level":"info","timestamp":"2026-02-25T23:58:45.811Z","caller":"app/main.go:49","msg":"Database connected successfully","host":"mysql","port":3306}
+{"level":"info","timestamp":"2026-02-25T23:58:45.816Z","caller":"app/main.go:54","msg":"Redis connected successfully","addr":"redis:6379"}
+{"level":"info","timestamp":"2026-02-25T23:58:45.816Z","caller":"jwt/keys.go:47","msg":"Loaded existing JWT keys"}
+{"level":"info","timestamp":"2026-02-25T23:58:45.816Z","caller":"app/main.go:61","msg":"JWT keys loaded successfully"}
+panic: ':tenant_id' in new path '/api/v1/tenants/:tenant_id/users' conflicts with existing wildcard ':id' in existing prefix '/api/v1/tenants/:id'
+
+goroutine 1 [running]:
+github.com/gin-gonic/gin.(*node).addRoute(0x135d39c?, {0xc00003c3c0, 0x20}, {0xc0001ac690, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/tree.go:240 +0xb6a
+github.com/gin-gonic/gin.(*Engine).addRoute(0xc0003684e0, {0x135d39c, 0x3}, {0xc00003c3c0, 0x20}, {0xc0001ac690, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/gin.go:367 +0x252
+github.com/gin-gonic/gin.(*RouterGroup).handle(0xc0003c24c0, {0x135d39c, 0x3}, {0x1372b1a?, 0x0?}, {0xc000148318, 0x1, 0xc0003648f0?})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:89 +0x13e
+github.com/gin-gonic/gin.(*RouterGroup).GET(...)
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:117
+main.main()
+	/app/main.go:114 +0x14f8
+{"level":"info","timestamp":"2026-02-25T23:58:47.710Z","caller":"runtime/proc.go:283","msg":"Starting NexusID","mode":"release","port":8080}
+{"level":"info","timestamp":"2026-02-25T23:58:47.713Z","caller":"app/main.go:49","msg":"Database connected successfully","host":"mysql","port":3306}
+{"level":"info","timestamp":"2026-02-25T23:58:47.717Z","caller":"app/main.go:54","msg":"Redis connected successfully","addr":"redis:6379"}
+{"level":"info","timestamp":"2026-02-25T23:58:47.717Z","caller":"jwt/keys.go:47","msg":"Loaded existing JWT keys"}
+{"level":"info","timestamp":"2026-02-25T23:58:47.717Z","caller":"app/main.go:61","msg":"JWT keys loaded successfully"}
+panic: ':tenant_id' in new path '/api/v1/tenants/:tenant_id/users' conflicts with existing wildcard ':id' in existing prefix '/api/v1/tenants/:id'
+
+goroutine 1 [running]:
+github.com/gin-gonic/gin.(*node).addRoute(0x135d39c?, {0xc0002b8080, 0x20}, {0xc000392288, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/tree.go:240 +0xb6a
+github.com/gin-gonic/gin.(*Engine).addRoute(0xc0002a64e0, {0x135d39c, 0x3}, {0xc0002b8080, 0x20}, {0xc000392288, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/gin.go:367 +0x252
+github.com/gin-gonic/gin.(*RouterGroup).handle(0xc0004a8240, {0x135d39c, 0x3}, {0x1372b1a?, 0x0?}, {0xc0004562f8, 0x1, 0xc0002a2680?})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:89 +0x13e
+github.com/gin-gonic/gin.(*RouterGroup).GET(...)
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:117
+main.main()
+	/app/main.go:114 +0x14f8
+{"level":"info","timestamp":"2026-02-25T23:58:51.178Z","caller":"runtime/proc.go:283","msg":"Starting NexusID","mode":"release","port":8080}
+{"level":"info","timestamp":"2026-02-25T23:58:51.180Z","caller":"app/main.go:49","msg":"Database connected successfully","host":"mysql","port":3306}
+{"level":"info","timestamp":"2026-02-25T23:58:51.185Z","caller":"app/main.go:54","msg":"Redis connected successfully","addr":"redis:6379"}
+{"level":"info","timestamp":"2026-02-25T23:58:51.185Z","caller":"jwt/keys.go:47","msg":"Loaded existing JWT keys"}
+{"level":"info","timestamp":"2026-02-25T23:58:51.185Z","caller":"app/main.go:61","msg":"JWT keys loaded successfully"}
+panic: ':tenant_id' in new path '/api/v1/tenants/:tenant_id/users' conflicts with existing wildcard ':id' in existing prefix '/api/v1/tenants/:id'
+
+goroutine 1 [running]:
+github.com/gin-gonic/gin.(*node).addRoute(0x135d39c?, {0xc000146120, 0x20}, {0xc0001322a0, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/tree.go:240 +0xb6a
+github.com/gin-gonic/gin.(*Engine).addRoute(0xc00043c000, {0x135d39c, 0x3}, {0xc000146120, 0x20}, {0xc0001322a0, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/gin.go:367 +0x252
+github.com/gin-gonic/gin.(*RouterGroup).handle(0xc00012c380, {0x135d39c, 0x3}, {0x1372b1a?, 0x0?}, {0xc000148320, 0x1, 0xc00035c8f0?})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:89 +0x13e
+github.com/gin-gonic/gin.(*RouterGroup).GET(...)
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:117
+main.main()
+	/app/main.go:114 +0x14f8
+{"level":"info","timestamp":"2026-02-25T23:58:57.877Z","caller":"runtime/proc.go:283","msg":"Starting NexusID","mode":"release","port":8080}
+{"level":"info","timestamp":"2026-02-25T23:58:57.879Z","caller":"app/main.go:49","msg":"Database connected successfully","host":"mysql","port":3306}
+{"level":"info","timestamp":"2026-02-25T23:58:57.882Z","caller":"app/main.go:54","msg":"Redis connected successfully","addr":"redis:6379"}
+{"level":"info","timestamp":"2026-02-25T23:58:57.882Z","caller":"jwt/keys.go:47","msg":"Loaded existing JWT keys"}
+{"level":"info","timestamp":"2026-02-25T23:58:57.882Z","caller":"app/main.go:61","msg":"JWT keys loaded successfully"}
+panic: ':tenant_id' in new path '/api/v1/tenants/:tenant_id/users' conflicts with existing wildcard ':id' in existing prefix '/api/v1/tenants/:id'
+
+goroutine 1 [running]:
+github.com/gin-gonic/gin.(*node).addRoute(0x135d39c?, {0xc0005160c0, 0x20}, {0xc0005202a0, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/tree.go:240 +0xb6a
+github.com/gin-gonic/gin.(*Engine).addRoute(0xc0002c04e0, {0x135d39c, 0x3}, {0xc0005160c0, 0x20}, {0xc0005202a0, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/gin.go:367 +0x252
+github.com/gin-gonic/gin.(*RouterGroup).handle(0xc00053a280, {0x135d39c, 0x3}, {0x1372b1a?, 0x0?}, {0xc0003a2308, 0x1, 0xc0002bc8f0?})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:89 +0x13e
+github.com/gin-gonic/gin.(*RouterGroup).GET(...)
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:117
+main.main()
+	/app/main.go:114 +0x14f8
+{"level":"info","timestamp":"2026-02-25T23:59:11.043Z","caller":"runtime/proc.go:283","msg":"Starting NexusID","mode":"release","port":8080}
+{"level":"info","timestamp":"2026-02-25T23:59:11.046Z","caller":"app/main.go:49","msg":"Database connected successfully","host":"mysql","port":3306}
+{"level":"info","timestamp":"2026-02-25T23:59:11.049Z","caller":"app/main.go:54","msg":"Redis connected successfully","addr":"redis:6379"}
+{"level":"info","timestamp":"2026-02-25T23:59:11.049Z","caller":"jwt/keys.go:47","msg":"Loaded existing JWT keys"}
+{"level":"info","timestamp":"2026-02-25T23:59:11.049Z","caller":"app/main.go:61","msg":"JWT keys loaded successfully"}
+panic: ':tenant_id' in new path '/api/v1/tenants/:tenant_id/users' conflicts with existing wildcard ':id' in existing prefix '/api/v1/tenants/:id'
+
+goroutine 1 [running]:
+github.com/gin-gonic/gin.(*node).addRoute(0x135d39c?, {0xc0003720a0, 0x20}, {0xc00019e690, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/tree.go:240 +0xb6a
+github.com/gin-gonic/gin.(*Engine).addRoute(0xc0003604e0, {0x135d39c, 0x3}, {0xc0003720a0, 0x20}, {0xc00019e690, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/gin.go:367 +0x252
+github.com/gin-gonic/gin.(*RouterGroup).handle(0xc0000b62c0, {0x135d39c, 0x3}, {0x1372b1a?, 0x0?}, {0xc0001844d0, 0x1, 0xc00035c8f0?})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:89 +0x13e
+github.com/gin-gonic/gin.(*RouterGroup).GET(...)
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:117
+main.main()
+	/app/main.go:114 +0x14f8
+{"level":"info","timestamp":"2026-02-25T23:59:36.906Z","caller":"runtime/proc.go:283","msg":"Starting NexusID","mode":"release","port":8080}
+{"level":"info","timestamp":"2026-02-25T23:59:36.908Z","caller":"app/main.go:49","msg":"Database connected successfully","host":"mysql","port":3306}
+{"level":"info","timestamp":"2026-02-25T23:59:36.910Z","caller":"app/main.go:54","msg":"Redis connected successfully","addr":"redis:6379"}
+{"level":"info","timestamp":"2026-02-25T23:59:36.910Z","caller":"jwt/keys.go:47","msg":"Loaded existing JWT keys"}
+{"level":"info","timestamp":"2026-02-25T23:59:36.910Z","caller":"app/main.go:61","msg":"JWT keys loaded successfully"}
+panic: ':tenant_id' in new path '/api/v1/tenants/:tenant_id/users' conflicts with existing wildcard ':id' in existing prefix '/api/v1/tenants/:id'
+
+goroutine 1 [running]:
+github.com/gin-gonic/gin.(*node).addRoute(0x135d39c?, {0xc000432100, 0x20}, {0xc000462288, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/tree.go:240 +0xb6a
+github.com/gin-gonic/gin.(*Engine).addRoute(0xc0003184e0, {0x135d39c, 0x3}, {0xc000432100, 0x20}, {0xc000462288, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/gin.go:367 +0x252
+github.com/gin-gonic/gin.(*RouterGroup).handle(0xc0002c0140, {0x135d39c, 0x3}, {0x1372b1a?, 0x0?}, {0xc0004342a0, 0x1, 0xc0003148f0?})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:89 +0x13e
+github.com/gin-gonic/gin.(*RouterGroup).GET(...)
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:117
+main.main()
+	/app/main.go:114 +0x14f8
+{"level":"info","timestamp":"2026-02-26T00:00:28.402Z","caller":"runtime/proc.go:283","msg":"Starting NexusID","mode":"release","port":8080}
+{"level":"info","timestamp":"2026-02-26T00:00:28.405Z","caller":"app/main.go:49","msg":"Database connected successfully","host":"mysql","port":3306}
+{"level":"info","timestamp":"2026-02-26T00:00:28.407Z","caller":"app/main.go:54","msg":"Redis connected successfully","addr":"redis:6379"}
+{"level":"info","timestamp":"2026-02-26T00:00:28.408Z","caller":"jwt/keys.go:47","msg":"Loaded existing JWT keys"}
+{"level":"info","timestamp":"2026-02-26T00:00:28.408Z","caller":"app/main.go:61","msg":"JWT keys loaded successfully"}
+panic: ':tenant_id' in new path '/api/v1/tenants/:tenant_id/users' conflicts with existing wildcard ':id' in existing prefix '/api/v1/tenants/:id'
+
+goroutine 1 [running]:
+github.com/gin-gonic/gin.(*node).addRoute(0x135d39c?, {0xc0006060e0, 0x20}, {0xc000148288, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/tree.go:240 +0xb6a
+github.com/gin-gonic/gin.(*Engine).addRoute(0xc000494000, {0x135d39c, 0x3}, {0xc0006060e0, 0x20}, {0xc000148288, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/gin.go:367 +0x252
+github.com/gin-gonic/gin.(*RouterGroup).handle(0xc00022e280, {0x135d39c, 0x3}, {0x1372b1a?, 0x0?}, {0xc00013c320, 0x1, 0xc0002bc8f0?})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:89 +0x13e
+github.com/gin-gonic/gin.(*RouterGroup).GET(...)
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:117
+main.main()
+	/app/main.go:114 +0x14f8
+{"level":"info","timestamp":"2026-02-26T00:01:28.706Z","caller":"runtime/proc.go:283","msg":"Starting NexusID","mode":"release","port":8080}
+{"level":"info","timestamp":"2026-02-26T00:01:28.709Z","caller":"app/main.go:49","msg":"Database connected successfully","host":"mysql","port":3306}
+{"level":"info","timestamp":"2026-02-26T00:01:28.713Z","caller":"app/main.go:54","msg":"Redis connected successfully","addr":"redis:6379"}
+{"level":"info","timestamp":"2026-02-26T00:01:28.713Z","caller":"jwt/keys.go:47","msg":"Loaded existing JWT keys"}
+{"level":"info","timestamp":"2026-02-26T00:01:28.713Z","caller":"app/main.go:61","msg":"JWT keys loaded successfully"}
+panic: ':tenant_id' in new path '/api/v1/tenants/:tenant_id/users' conflicts with existing wildcard ':id' in existing prefix '/api/v1/tenants/:id'
+
+goroutine 1 [running]:
+github.com/gin-gonic/gin.(*node).addRoute(0x135d39c?, {0xc00003c140, 0x20}, {0xc000128288, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/tree.go:240 +0xb6a
+github.com/gin-gonic/gin.(*Engine).addRoute(0xc0003584e0, {0x135d39c, 0x3}, {0xc00003c140, 0x20}, {0xc000128288, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/gin.go:367 +0x252
+github.com/gin-gonic/gin.(*RouterGroup).handle(0xc00048c2c0, {0x135d39c, 0x3}, {0x1372b1a?, 0x0?}, {0xc0001844d0, 0x1, 0xc0003548f0?})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:89 +0x13e
+github.com/gin-gonic/gin.(*RouterGroup).GET(...)
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:117
+main.main()
+	/app/main.go:114 +0x14f8
+{"level":"info","timestamp":"2026-02-26T00:02:29.010Z","caller":"runtime/proc.go:283","msg":"Starting NexusID","mode":"release","port":8080}
+{"level":"info","timestamp":"2026-02-26T00:02:29.013Z","caller":"app/main.go:49","msg":"Database connected successfully","host":"mysql","port":3306}
+{"level":"info","timestamp":"2026-02-26T00:02:29.017Z","caller":"app/main.go:54","msg":"Redis connected successfully","addr":"redis:6379"}
+{"level":"info","timestamp":"2026-02-26T00:02:29.017Z","caller":"jwt/keys.go:47","msg":"Loaded existing JWT keys"}
+{"level":"info","timestamp":"2026-02-26T00:02:29.017Z","caller":"app/main.go:61","msg":"JWT keys loaded successfully"}
+panic: ':tenant_id' in new path '/api/v1/tenants/:tenant_id/users' conflicts with existing wildcard ':id' in existing prefix '/api/v1/tenants/:id'
+
+goroutine 1 [running]:
+github.com/gin-gonic/gin.(*node).addRoute(0x135d39c?, {0xc00012c120, 0x20}, {0xc00000e660, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/tree.go:240 +0xb6a
+github.com/gin-gonic/gin.(*Engine).addRoute(0xc0003264e0, {0x135d39c, 0x3}, {0xc00012c120, 0x20}, {0xc00000e660, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/gin.go:367 +0x252
+github.com/gin-gonic/gin.(*RouterGroup).handle(0xc0001a6440, {0x135d39c, 0x3}, {0x1372b1a?, 0x0?}, {0xc00007c428, 0x1, 0xc000322680?})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:89 +0x13e
+github.com/gin-gonic/gin.(*RouterGroup).GET(...)
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:117
+main.main()
+	/app/main.go:114 +0x14f8
+{"level":"info","timestamp":"2026-02-26T00:03:29.315Z","caller":"runtime/proc.go:283","msg":"Starting NexusID","mode":"release","port":8080}
+{"level":"info","timestamp":"2026-02-26T00:03:29.318Z","caller":"app/main.go:49","msg":"Database connected successfully","host":"mysql","port":3306}
+{"level":"info","timestamp":"2026-02-26T00:03:29.322Z","caller":"app/main.go:54","msg":"Redis connected successfully","addr":"redis:6379"}
+{"level":"info","timestamp":"2026-02-26T00:03:29.322Z","caller":"jwt/keys.go:47","msg":"Loaded existing JWT keys"}
+{"level":"info","timestamp":"2026-02-26T00:03:29.322Z","caller":"app/main.go:61","msg":"JWT keys loaded successfully"}
+panic: ':tenant_id' in new path '/api/v1/tenants/:tenant_id/users' conflicts with existing wildcard ':id' in existing prefix '/api/v1/tenants/:id'
+
+goroutine 1 [running]:
+github.com/gin-gonic/gin.(*node).addRoute(0x135d39c?, {0xc0004e0120, 0x20}, {0xc00000e2d0, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/tree.go:240 +0xb6a
+github.com/gin-gonic/gin.(*Engine).addRoute(0xc0002e84e0, {0x135d39c, 0x3}, {0xc0004e0120, 0x20}, {0xc00000e2d0, 0x3, 0x3})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/gin.go:367 +0x252
+github.com/gin-gonic/gin.(*RouterGroup).handle(0xc0004981c0, {0x135d39c, 0x3}, {0x1372b1a?, 0x0?}, {0xc00007c328, 0x1, 0xc0002e48f0?})
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:89 +0x13e
+github.com/gin-gonic/gin.(*RouterGroup).GET(...)
+	/go/pkg/mod/github.com/gin-gonic/gin@v1.11.0/routergroup.go:117
+main.main()
+	/app/main.go:114 +0x14f8
