@@ -19,6 +19,7 @@ NexusID 是一个基于 Go（后端）和 React（前端）构建的全栈单点
 - **用户管理**: 包含注册、登录、角色和权限分配
 - **防暴力破解**: 登录限流策略和账户自动锁定机制
 - **单点登出**: 全局会话注销及 Token 吊销支持
+- **密码修改**: 用户自助修改密码功能
 
 ### 技术栈
 
@@ -199,9 +200,64 @@ npm run dev
 - `POST /api/v1/auth/login` - 账户登录
 - `POST /api/v1/auth/register` - 账户注册
 - `POST /api/v1/auth/refresh` - 手动刷新访问令牌
+- `POST /api/v1/user/change-password` - 修改用户密码
 
 ### 其他管理 API
 *（详情查阅后续接口文档，支持租户、用户、角色及 OIDC 客户端的完整 CRUD 操作）*
+
+## 安全功能
+
+### 限流策略
+- 基于IP的登录尝试限流
+- 每15分钟最多5次失败尝试
+- 达到阈值后账户锁定30分钟
+
+### 密码安全
+- 使用 Bcrypt 哈希存储密码
+- 最少8位密码要求
+- 失败登录尝试追踪
+
+### 令牌安全
+- RS256 非对称加密（无共享密钥）
+- JWKS 端点用于公钥分发
+- 刷新令牌轮换（使用时旧令牌失效）
+- 令牌过期和吊销
+
+### 租户隔离
+- 所有查询都限定在 tenant_id 范围内
+- 服务层验证
+- 数据库级约束
+
+## 开发指南
+
+### 运行测试
+
+```bash
+# 后端测试
+cd backend
+go test ./...
+
+# 前端测试
+cd frontend
+npm test
+```
+
+### 数据库迁移
+
+创建新迁移:
+```bash
+migrate create -ext sql -dir deployments/migrations -seq migration_name
+```
+
+运行迁移:
+```bash
+migrate -path deployments/migrations -database "mysql://user:pass@tcp(localhost:3306)/nexus_id" up
+```
+
+回滚迁移:
+```bash
+migrate -path deployments/migrations -database "mysql://user:pass@tcp(localhost:3306)/nexus_id" down 1
+```
 
 ## 生产部署建议
 

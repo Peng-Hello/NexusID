@@ -418,7 +418,17 @@ function Clients() {
                     <div className="mt-1 flex flex-wrap gap-1">
                       {(client.scopes ?? []).map((scope, idx) => (
                         <span key={idx} className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-800">
-                          {scope}
+                          {t(`clients.scopeLabel_${scope}`)}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-700">{t('clients.grantTypes')}</p>
+                    <div className="mt-1 flex flex-wrap gap-1">
+                      {(client.grant_types ?? []).map((grant, idx) => (
+                        <span key={idx} className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-purple-100 text-purple-800">
+                          {t(`clients.grantLabel_${grant}`)}
                         </span>
                       ))}
                     </div>
