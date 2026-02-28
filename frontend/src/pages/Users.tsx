@@ -38,6 +38,7 @@ function Users() {
   const [createForm, setCreateForm] = useState({ email: '', password: '', full_name: '' })
   const [createError, setCreateError] = useState('')
   const [creating, setCreating] = useState(false)
+  const [createUserRoleIds, setCreateUserRoleIds] = useState<Set<number>>(new Set())
 
   // Edit user state
   const [editingUser, setEditingUser] = useState<User | null>(null)
@@ -81,6 +82,25 @@ function Users() {
   )
 
   // Create user
+  const openCreateDialog = async () => {
+    setShowCreateDialog(true)
+    setCreateForm({ email: '', password: '', full_name: '' })
+    setCreateError('')
+    setCreateUserRoleIds(new Set())
+
+    setRoleLoading(true)
+    try {
+      const token = localStorage.getItem('accessToken')
+      const rolesRes = await fetch(`/api/v1/tenants/${tenantId}/roles?page=1&page_size=100`, { headers: { 'Authorization': `Bearer ${token}` } })
+      const rolesData = await rolesRes.json()
+      setAllRoles(rolesData.data || [])
+    } catch {
+      setAllRoles([])
+    } finally {
+      setRoleLoading(false)
+    }
+  }
+
   const handleCreate = async () => {
     setCreateError('')
     setCreating(true)
@@ -96,8 +116,21 @@ function Users() {
       })
       const data = await response.json()
       if (response.ok) {
+        // Assign roles if any were checked
+        if (createUserRoleIds.size > 0) {
+          const assignPromises = Array.from(createUserRoleIds).map(roleId =>
+            fetch(`/api/v1/tenants/${tenantId}/roles/assign`, {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({ user_id: data.id, role_id: roleId }),
+            })
+          )
+          await Promise.allSettled(assignPromises)
+        }
+
         setShowCreateDialog(false)
         setCreateForm({ email: '', password: '', full_name: '' })
+        setCreateUserRoleIds(new Set())
         fetchUsers()
       } else {
         setCreateError(data.error || t('users.createFailed'))
@@ -217,11 +250,15 @@ function Users() {
 
         {/* Create User Dialog */}
         <Dialog open={showCreateDialog} onOpenChange={(open) => {
-          setShowCreateDialog(open)
-          if (!open) { setCreateForm({ email: '', password: '', full_name: '' }); setCreateError('') }
+          if (!open) {
+            setShowCreateDialog(false)
+            setCreateForm({ email: '', password: '', full_name: '' })
+            setCreateError('')
+            setCreateUserRoleIds(new Set())
+          }
         }}>
           <DialogTrigger asChild>
-            <Button>
+            <Button onClick={(e) => { e.preventDefault(); openCreateDialog(); }}>
               <Plus className="w-4 h-4 mr-2" />
               {t('users.addUser')}
             </Button>
@@ -264,6 +301,39 @@ function Users() {
                   placeholder={t('users.passwordPlaceholder')}
                 />
                 <p className="text-xs text-gray-500">{t('users.passwordHint')}</p>
+              </div>
+
+              {/* Role Assignment During Creation */}
+              <div className="mt-2">
+                <Label className="text-sm font-medium">{t('users.rolesLabel')}</Label>
+                {roleLoading ? (
+                  <p className="text-xs text-gray-500 mt-1">{t('common.loading')}</p>
+                ) : allRoles.length === 0 ? (
+                  <p className="text-xs text-gray-400 mt-1">{t('roles.noRoles')}</p>
+                ) : (
+                  <div className="mt-2 border rounded p-3 max-h-40 overflow-y-auto space-y-2">
+                    {allRoles.map(role => (
+                      <div key={role.id} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`create-role-${role.id}`}
+                          checked={createUserRoleIds.has(role.id)}
+                          onCheckedChange={(checked) => {
+                            setCreateUserRoleIds(prev => {
+                              const next = new Set(prev)
+                              if (checked) next.add(role.id)
+                              else next.delete(role.id)
+                              return next
+                            })
+                          }}
+                        />
+                        <Label htmlFor={`create-role-${role.id}`} className="font-normal cursor-pointer">
+                          {role.name}
+                          {role.is_system && <span className="ml-1 text-xs text-blue-500">(system)</span>}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
             <DialogFooter>
